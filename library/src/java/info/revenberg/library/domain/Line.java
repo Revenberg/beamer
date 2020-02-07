@@ -1,103 +1,25 @@
-package info.revenberg.javalibrary.domain;
+package info.revenberg.library.domain;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+public interface Line extends AuditModel {
+    
+    public long getId();
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import info.revenberg.javalibrary.domain.AuditModel;
+    public void setVers(Vers vers);
 
-@Entity
-@Table(name = "line")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Line extends AuditModel {
-    private static final long serialVersionUID = -8627990442911682692L;
+    public Vers getVers();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-    private long id;
+    public int getRank();
 
-    @Column(nullable = false)
-    private int rank;
+    public void setRank(int rank);
 
-    @Column(nullable = false)
-    private String text;
+    public String getText();
 
-    private String location;
+    public void setText(String text);
 
-    double minY;
-    double MaxY;
-    double minX;
-    double MaxX;
+    public String getLocation();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_vers", referencedColumnName = "versid")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    // @JsonBackReference
-    private Vers vers;
+    public void setLocation(String location);
 
-    public Line() {
-    }
-
-    public Line(int rank, String text, String location,
-            double minY, double MaxY, double minX, double MaxX, Vers vers) {
-        this.rank = rank;
-        this.text = text;
-        this.minY = minY;
-        this.MaxY = MaxY;
-        this.minX = minX;
-        this.MaxX = MaxX;
-        this.location = location;
-
-        setVers(vers);
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public void setVers(Vers vers) {
-        this.vers = vers;
-    }
-
-    public Vers getVers() {
-        return this.vers;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Line))
-            return false;
-        return id == ((Line) o).getId();
-    }
+    public boolean equals(Object o);
 
 }

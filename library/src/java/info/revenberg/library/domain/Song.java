@@ -1,122 +1,36 @@
 package info.revenberg.javalibrary.domain;
 
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import info.revenberg.javalibrary.domain.AuditModel;
-
 /*
  * a simple domain entity doubling as a DTO
  */
-@Entity
-@Table(name = "song")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Song extends AuditModel {
-    private static final long serialVersionUID = -522275488406568162L;
+public interface Song extends AuditModel {
 
-    public final static String secretKey = "ssshhhhhhhhhhh!!!!";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-    private long id;
+    public void setVerses(Set<Vers> verses);
 
-    @Column(nullable = false)
-    private long songid;
+    public Set<Vers> getVerses();
 
-    @Column(nullable = false)
-    private String name;
+    public long getId();
 
-    @Column(nullable = false)
-    private String source;
+    public long getSongid();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_bundle", referencedColumnName = "bundleid")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Bundle bundle;
+    public void setBundle(Bundle bundle);
 
-    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private Set<Vers> verses;
+    public Bundle getBundle();
 
-    public void setVerses(Set<Vers> verses) {
-        this.verses = verses;
-    }
+    public void setSongid(long songid);
 
-    public Set<Vers> getVerses() {
-        return verses;
-    }
+    public String getName();
 
-    public Song() {
-    }
+    public void setName(String name);
 
-    public Song(long songid, String name, String source, Bundle bundle) {
-        this.songid = songid;
-        this.name = name;
-        this.source = source;
-        setBundle(bundle);
-    }
+    public String getsource();
 
-    public long getId() {
-        return this.id;
-    }
+    public void setsource(String source);
 
-    public long getSongid() {
-        return songid;
-    }
+    public void addVers(Vers vers);
 
-    public void setBundle(Bundle bundle) {
-        this.bundle = bundle;
-    }
+    public void removeVers(Vers vers);
 
-    public Bundle getBundle() {
-        return this.bundle;
-    }
-
-    public void setSongid(long songid) {
-        this.songid = songid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getsource() {
-        return source;
-    }
-
-    public void setsource(String source) {
-        this.source = source;
-    }
-
-    public void addVers(Vers vers) {
-        verses.add(vers);
-        vers.setSong(this);
-    }
-
-    public void removeVers(Vers vers) {
-        verses.remove(vers);
-        vers.setSong(null);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Song))
-            return false;
-        return id == ((Song) o).getId();
-    }
+    public boolean equals(Object o) ;
 }

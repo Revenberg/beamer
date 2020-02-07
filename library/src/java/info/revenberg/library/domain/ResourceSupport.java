@@ -1,5 +1,5 @@
-package info.revenberg.javalibrary.domain;
+package info.revenberg.library.domain;
 
-public class ResourceSupport {
+public interface ResourceSupport {
 
 }

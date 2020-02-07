@@ -1,93 +1,26 @@
-package info.revenberg.javalibrary.domain;
+package info.revenberg.library.domain;
 
-import java.util.Set;
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+public interface Bundle {
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+    public void addSong(Song song);
 
-import org.hibernate.annotations.GenericGenerator;
-import info.revenberg.javalibrary.domain.AuditModel;
+    public void removeSong(Song song);
 
-/*
- * a simple domain entity doubling as a DTO
- */
-@Entity
-@Table(name = "bundle")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Bundle extends AuditModel {    
-    private static final long serialVersionUID = -4206755717683730837L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-    private long id;
+    public void setId(Long id);
 
-    @Column(nullable = false)
-    private long bundleid;
+    public long getId();
 
-    @Column(nullable = false)
-    private String name;
+    public long getBundleid();
 
-    @Column()
-    private String mnemonic;
+    public void setBundleid(long bundleid);
 
-    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private Set<Song> songs;
+    public String getName();
 
-    public Bundle() {
-    }
+    public void setName(String name);
 
-    public Bundle(String name) {
-        setName(name);
-    }
+    public String getMnemonic();
 
-    public Bundle(long bundleid, String name, String mnemonic) {
-        setBundleid(bundleid);
-        setName(name);
-        setMnemonic(mnemonic);
-    }
+    public void setMnemonic(String mnemonic);
 
-    public void addSong(Song song) {
-        songs.add(song);
-        song.setBundle(this);
-    }
-
-    public void removeSong(Song song) {
-        songs.remove(song);
-        song.setBundle(null);
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public long getBundleid() {
-        return bundleid;
-    }
-
-    public void setBundleid(long bundleid) {
-        this.bundleid = bundleid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMnemonic() {
-        return mnemonic;
-    }
-
-    public void setMnemonic(String mnemonic) {
-        this.mnemonic = mnemonic;
-    }
+    public boolean equals(Object o) ;
 }

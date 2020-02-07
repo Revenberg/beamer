@@ -1,127 +1,37 @@
-package info.revenberg.javalibrary.domain;
+package info.revenberg.library.domain;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+public interface Vers extends AuditModel {
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import info.revenberg.javalibrary.domain.AuditModel;
+    public long getId();
 
-/*
- * a simple domain entity doubling as a DTO
- */
-@Entity
-@Table(name = "vers")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Vers extends AuditModel {
-    private static final long serialVersionUID = -3744664716090284011L;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-    private long id;
+    public void setSong(Song song);
 
-    @Column(nullable = false)
-    private long versid;
+    public Song getSong();
 
-    @Column(nullable = false)
-    private int rank;
+    public long getVersid();
 
-    @Column(nullable = false)
-    private String title;
+    public void setVersid(long versid);
 
-    @Column(nullable = false)
-    private String name;
-    
-    private String location;
-    private int versLines;
+    public int getRank();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_song", referencedColumnName = "songid")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonBackReference
-    private Song song;
+    public void setRank(int rank);
 
-    public Vers() {
-    }
+    public String getTitle();
 
-    public Vers(long songid, long versid, int rank, String title, String name, Song song) {
-        this.versid = versid;
-        this.rank = rank;
-        this.title = title;
-        this.name = name;
-        setSong(song);
-    }
+    public void setTitle(String title);
 
-    public long getId() {
-        return this.id;
-    }
+    public String getName();
 
-    public void setSong(Song song) {
-        this.song = song;
-    }
+    public void setName(String name);
 
-    public Song getSong() {
-        return this.song;
-    }
+    public String getLocation();
 
-    public long getVersid() {
-        return versid;
-    }
+    public void setLocation(String location);
 
-    public void setVersid(long versid) {
-        this.versid = versid;
-    }
+    public int getVersLines();
 
-    public int getRank() {
-        return rank;
-    }
+    public void setVersLines(int versLines);
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    
-    public int getVersLines() {
-        return versLines;
-    }
-
-    public void setVersLines(int versLines) {
-        this.versLines = versLines;
-    } 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Vers))
-            return false;
-        return id == ((Vers) o).getId();
-    }
+    public boolean equals(Object o);
 
 }

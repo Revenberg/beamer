@@ -1,65 +1,16 @@
-package info.revenberg.javalibrary.domain;
+package info.revenberg.library.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+public abstract interface AuditModel extends ResourceSupport {
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.persistence.*;
-import info.revenberg.javalibrary.domain.ResourceSupport;
-import java.io.Serializable;
-import java.util.Date;
-import info.revenberg.javalibrary.domain.AuditModel;
+    public Date getCreatedAt();
 
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public abstract class AuditModel extends ResourceSupport implements Serializable {
-    private static final long serialVersionUID = 1L;
+    public void setCreatedAt(Date createdAt);
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
-    @CreationTimestamp
-    private Date createdAt;
+    public Date getUpdatedAt();
 
-    // @Column(name = "updated_at", nullable = false)
-    @Column(name = "updated_at", nullable = false)
-    @LastModifiedDate
-    @UpdateTimestamp
-    private Date updatedAt;
+    public void setUpdatedAt(Date updatedAt);
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+    public String toString();
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    private byte[] toJson(Object r) throws Exception {
-        ObjectMapper map = new ObjectMapper();
-        return map.writeValueAsString(r).getBytes();
-    }
-
-    @Override
-    public String toString() {
-        try {
-            byte[] r1Json = toJson(this);
-            return new String(r1Json);
-
-        } catch (Exception e) {
-        }
-        return "";
-    }
+    public boolean equals(Object o) ;
 }
